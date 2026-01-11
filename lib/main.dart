@@ -1,19 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-// import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-import 'package:todo_locale_app/db/database.dart';
 import 'package:todo_locale_app/routes/main_page.dart';
 import 'package:todo_locale_app/routes/splash_screen.dart';
-import 'package:todo_locale_app/widgets/dasboard/statistick_card.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // Initialize FFI for Windows platform
-  // sqfliteFfiInit();
-
-  // databaseFactory = databaseFactoryFfi;
-  // await DatabaseHelper.instance.initDb();
-  // await DatabaseHelper.instance.initializeTasks();
 
   runApp(
     ProviderScope(
@@ -23,160 +14,9 @@ void main() async {
         routes: {
           '/': (context) => SplashScreen(),
           '/home': (context) => MainPage(),
-          // '/settings': (context) => SettingsPage(),
         },
         // home: SplashScreen(),
       ),
     ),
   );
 }
-
-// class SplashScreen extends StatefulWidget {
-//   const SplashScreen({super.key});
-
-//   @override
-//   State<SplashScreen> createState() => _SplashScreenState();
-// }
-
-// class _SplashScreenState extends State<SplashScreen> {
-//   @override
-//   void initState() {
-//     super.initState();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         backgroundColor: Colors.white,
-//         toolbarHeight: 90,
-//         title: Column(
-//           children: [
-//             Row(
-//               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//               children: [
-//                 Expanded(
-//                   child: Column(
-//                     children: [
-//                       Row(
-//                         children: [
-//                           Expanded(
-//                             child: Text(
-//                               "Мои задачи",
-//                               style: TextStyle(
-//                                 fontSize: 18,
-//                                 fontWeight: FontWeight.w600,
-//                               ),
-//                             ),
-//                           ),
-//                         ],
-//                       ),
-//                       Row(
-//                         children: [
-//                           Expanded(
-//                             child: Text(
-//                               "Активные задачи: ",
-//                               style: TextStyle(
-//                                 fontSize: 14,
-//                                 color: Colors.grey[600],
-//                               ),
-//                             ),
-//                           ),
-//                         ],
-//                       ),
-//                     ],
-//                   ),
-//                 ),
-//                 Icon(Icons.style),
-//               ],
-//             ),
-//             SizedBox(height: 20),
-//             Row(
-//               children: [
-//                 Expanded(
-//                   child: Container(
-//                     height: 1,
-//                     decoration: BoxDecoration(color: Colors.grey[300]),
-//                   ),
-//                 ),
-//               ],
-//             ),
-//           ],
-//         ),
-//         surfaceTintColor: Colors.transparent,
-//       ),
-//       body: Stack(
-//         children: [
-//           Container(
-//             width: MediaQuery.of(context).size.width,
-//             height: MediaQuery.of(context).size.height,
-//             decoration: BoxDecoration(color: Colors.white),
-//             child: Padding(
-//               padding: const EdgeInsets.all(15.0),
-//               child: SingleChildScrollView(
-//                 child: Column(
-//                   mainAxisAlignment: MainAxisAlignment.start,
-//                   children: [
-//                     Row(
-//                       mainAxisAlignment: MainAxisAlignment.spaceAround,
-//                       children: [
-//                         for (int i = 0; i < 3; i++) ...[StatistickCard()],
-//                       ],
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//             ),
-//           ),
-//           Align(
-//             alignment: Alignment(0, 1),
-//             child: GestureDetector(
-//               onTap: () {
-//                 showModalBottomSheet(
-//                   useSafeArea: true,
-//                   // backgroundColor: Colors.green,
-//                   shape: const RoundedRectangleBorder(
-//                     borderRadius: BorderRadius.vertical(
-//                       top: Radius.circular(20),
-//                     ),
-//                   ),
-//                   isScrollControlled: true,
-//                   context: context,
-//                   builder: (BuildContext context) {
-//                     return Column(
-//                       children: [
-//                         Row(
-//                           children: [
-//                             IconButton(
-//                               onPressed: () {
-//                                 Navigator.pop(context);
-//                               },
-//                               icon: const Icon(
-//                                 Icons.close,
-//                                 // color: Colors.white,
-//                               ),
-//                             ),
-//                           ],
-//                         ),
-//                       ],
-//                     );
-//                   },
-//                 );
-//               },
-//               child: Container(
-//                 width: 60,
-//                 height: 60,
-//                 margin: EdgeInsets.only(bottom: 30),
-//                 decoration: BoxDecoration(
-//                   color: Colors.black,
-//                   shape: BoxShape.circle,
-//                 ),
-//                 child: Icon(Icons.add, color: Colors.white),
-//               ),
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }

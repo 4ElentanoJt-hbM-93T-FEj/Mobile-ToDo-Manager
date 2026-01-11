@@ -16,7 +16,7 @@ class DatabaseHelper {
   Future<Database> initDb() async {
     String databasesPath = await getDatabasesPath();
     String path = package_path.join(databasesPath, 'task.db');
-
+    print(path);
     return await openDatabase(path, version: 1, onCreate: _onCreate);
   }
 
@@ -25,19 +25,25 @@ class DatabaseHelper {
     CREATE TABLE IF NOT EXISTS "Tasks" (
     	"id" INTEGER,
     	"title"	TEXT,
-    	"description" TEXT,
-    )
+    	"description" TEXT
+      );
     ''');
   }
 
-  Future<void> insertUser(Task task) async {
+  Future<void> deleteTask() async {
     Database db = await instance.db;
-    await db.insert('Tasks', {
-      'id': 3,
-      'title': "title",
-      'description': 'description',
-    });
+    await db.delete("Tasks", where: "id > ?", whereArgs: [0]);
   }
+
+  // Future<void> insertTask(Task task) async {
+  //   Database db = await instance.db;
+
+  //   await db.insert('Tasks', {
+  //     'id': task.id,
+  //     'title': task.title,
+  //     'description': task.description ?? "",
+  //   });
+  // }
 
   Future<List<Map<String, dynamic>>> queryAllTasks() async {
     Database db = await instance.db;
@@ -54,14 +60,9 @@ class DatabaseHelper {
     );
   }
 
-  Future<int> deleteUser(int id) async {
-    Database db = await instance.db;
-    return await db.delete('Tasks', where: 'id = ?', whereArgs: [id]);
-  }
-
-  Future<void> initializeTasks() async {
-    await insertUser(
-      Task(id: 1, title: "Первая задача", description: "Открыть приложение"),
-    );
-  }
+  // Future<void> initializeTasks() async {
+  // await insertTask(
+  //   Task(id: 0, title: "Первая задача", description: "Открыть приложение"),
+  // );
+  // }
 }

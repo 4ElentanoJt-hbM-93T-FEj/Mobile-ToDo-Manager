@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:todo_locale_app/db/database.dart';
+import 'package:todo_locale_app/widgets/addTask/add_task_modal_sheet.dart';
 import 'package:todo_locale_app/widgets/dasboard/statistick_card.dart';
 
 class MainPage extends StatefulWidget {
@@ -9,9 +11,18 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  List<Map<String, dynamic>> listTasks = [];
+
   @override
   void initState() {
+    getTasks();
     super.initState();
+  }
+
+  Future<void> getTasks() async {
+    listTasks = await DatabaseHelper.instance.queryAllTasks();
+    setState(() {});
+    print(listTasks);
   }
 
   @override
@@ -114,20 +125,7 @@ class _MainPageState extends State<MainPage> {
                   isScrollControlled: true,
                   context: context,
                   builder: (BuildContext context) {
-                    return Column(
-                      children: [
-                        Row(
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              icon: const Icon(Icons.close),
-                            ),
-                          ],
-                        ),
-                      ],
-                    );
+                    return AddTaskWidget();
                   },
                 );
               },
