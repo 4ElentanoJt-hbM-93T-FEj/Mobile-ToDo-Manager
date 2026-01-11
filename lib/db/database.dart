@@ -25,7 +25,8 @@ class DatabaseHelper {
     CREATE TABLE IF NOT EXISTS "Tasks" (
     	"id" INTEGER,
     	"title"	TEXT,
-    	"description" TEXT
+    	"description" TEXT,
+      PRIMARY KEY("id" AUTOINCREMENT)
       );
     ''');
   }
@@ -35,34 +36,34 @@ class DatabaseHelper {
     await db.delete("Tasks", where: "id > ?", whereArgs: [0]);
   }
 
-  // Future<void> insertTask(Task task) async {
-  //   Database db = await instance.db;
+  Future<void> insertTask(Task task) async {
+    Database db = await instance.db;
 
-  //   await db.insert('Tasks', {
-  //     'id': task.id,
-  //     'title': task.title,
-  //     'description': task.description ?? "",
-  //   });
-  // }
+    await db.insert('Tasks', {
+      // 'id': task.id,
+      'title': task.title,
+      'description': task.description ?? "",
+    });
+  }
 
   Future<List<Map<String, dynamic>>> queryAllTasks() async {
     Database db = await instance.db;
     return await db.query('Tasks');
   }
 
-  Future<int> updateUser(Task task) async {
-    Database db = await instance.db;
-    return await db.update(
-      'Tasks',
-      task.toMap(),
-      where: 'id = ?',
-      whereArgs: [task.id],
+  // Future<int> updateUser(Task task) async {
+  //   Database db = await instance.db;
+  //   return await db.update(
+  //     'Tasks',
+  //     task.toMap(),
+  //     where: 'id = ?',
+  //     whereArgs: [task.id],
+  //   );
+  // }
+
+  Future<void> initializeTasks() async {
+    await insertTask(
+      Task(title: "Первая задача", description: "Открыть приложение"),
     );
   }
-
-  // Future<void> initializeTasks() async {
-  // await insertTask(
-  //   Task(id: 0, title: "Первая задача", description: "Открыть приложение"),
-  // );
-  // }
 }

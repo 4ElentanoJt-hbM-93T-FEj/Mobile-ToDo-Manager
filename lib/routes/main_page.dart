@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:todo_locale_app/db/database.dart';
+import 'package:todo_locale_app/provider/task/task_model.dart';
 import 'package:todo_locale_app/widgets/addTask/add_task_modal_sheet.dart';
 import 'package:todo_locale_app/widgets/dasboard/statistick_card.dart';
+import 'package:todo_locale_app/widgets/item_task_card/task_item_card.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -106,6 +108,9 @@ class _MainPageState extends State<MainPage> {
                         ],
                       ],
                     ),
+                    for (var item in listTasks) ...[
+                      TaskItemCard(id: item["id"], title: item["title"]),
+                    ],
                   ],
                 ),
               ),

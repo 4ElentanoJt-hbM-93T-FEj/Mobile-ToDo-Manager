@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:todo_locale_app/db/database.dart';
+import 'package:todo_locale_app/provider/task/task_model.dart';
 
 class AddTaskWidget extends StatefulWidget {
   const AddTaskWidget({super.key});
@@ -48,8 +50,28 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
             TextField(controller: decriptionController, maxLines: 5),
             Expanded(child: SizedBox()),
             ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
+              onPressed: () async {
+                if (nameController.text != "") {
+                  try {
+                    await DatabaseHelper.instance.insertTask(
+                      Task(
+                        title: nameController.text,
+                        description: decriptionController.text,
+                      ),
+                    );
+                  } catch (_) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Ошибка создания задачи'),
+                        backgroundColor: Colors.green,
+                        elevation: 10,
+                        behavior: SnackBarBehavior.floating,
+                        margin: EdgeInsets.all(5),
+                      ),
+                    );
+                  }
+                  Navigator.pop(context);
+                } else {}
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.black,
