@@ -3,7 +3,8 @@ import 'package:todo_locale_app/db/database.dart';
 import 'package:todo_locale_app/provider/task/task_model.dart';
 
 class AddTaskWidget extends StatefulWidget {
-  const AddTaskWidget({super.key});
+  final Function create;
+  const AddTaskWidget({super.key, required this.create});
 
   @override
   State<AddTaskWidget> createState() => _AddTaskWidgetState();
@@ -59,6 +60,8 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
                         description: decriptionController.text,
                       ),
                     );
+                    await widget.create();
+                    Navigator.pop(context);
                   } catch (_) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
@@ -70,7 +73,6 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
                       ),
                     );
                   }
-                  Navigator.pop(context);
                 } else {}
               },
               style: ElevatedButton.styleFrom(

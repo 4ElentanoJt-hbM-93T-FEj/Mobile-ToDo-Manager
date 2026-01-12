@@ -26,6 +26,7 @@ class DatabaseHelper {
     	"id" INTEGER,
     	"title"	TEXT,
     	"description" TEXT,
+      "status" TEXT,
       PRIMARY KEY("id" AUTOINCREMENT)
       );
     ''');
@@ -40,10 +41,15 @@ class DatabaseHelper {
     Database db = await instance.db;
 
     await db.insert('Tasks', {
-      // 'id': task.id,
       'title': task.title,
       'description': task.description ?? "",
+      'status': "opened",
     });
+  }
+
+  Future<List<Map<String, Object?>>> getCountOpenTasks() async {
+    Database db = await instance.db;
+    return await db.query("Tasks", columns: ["count(*)"], where: "status = 'opened'");
   }
 
   Future<List<Map<String, dynamic>>> queryAllTasks() async {

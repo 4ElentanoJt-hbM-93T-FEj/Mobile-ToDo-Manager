@@ -14,11 +14,19 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   List<Map<String, dynamic>> listTasks = [];
+  int countOpenTask = 0;
 
   @override
   void initState() {
     getTasks();
+    getCounts();
     super.initState();
+  }
+
+  Future<void> getCounts() async {
+    var res = await DatabaseHelper.instance.getCountOpenTasks();
+    countOpenTask = res.first.values.toList().first as int;
+    setState(() {});
   }
 
   Future<void> getTasks() async {
@@ -58,7 +66,7 @@ class _MainPageState extends State<MainPage> {
                         children: [
                           Expanded(
                             child: Text(
-                              "Активные задачи: ",
+                              "Активные задачи: $countOpenTask",
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.grey[600],
@@ -94,30 +102,33 @@ class _MainPageState extends State<MainPage> {
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
             decoration: BoxDecoration(color: Colors.white),
-            child: Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        for (int i = 0; i < 3; i++) ...[
-                          StatistickCard(type: 'Тип', count: 0),
-                        ],
+            padding: EdgeInsets.all(15),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      for (int i = 0; i < 3; i++) ...[
+                        StatistickCard(type: 'Тип', count: 0),
                       ],
-                    ),
-                    for (var item in listTasks) ...[
-                      TaskItemCard(id: item["id"], title: item["title"]),
                     ],
-                  ],
-                ),
+                  ),
+                  SizedBox(height: 20),
+                  Column(
+                    children: [
+                      for (var item in listTasks) ...[
+                        TaskItemCard(id: item["id"], title: item["title"]),
+                      ],
+                    ],
+                  ),
+                ],
               ),
             ),
           ),
           Align(
-            alignment: Alignment(0, 1),
+            alignment: Alignment(1, 1),
             child: GestureDetector(
               onTap: () {
                 showModalBottomSheet(
@@ -130,14 +141,19 @@ class _MainPageState extends State<MainPage> {
                   isScrollControlled: true,
                   context: context,
                   builder: (BuildContext context) {
-                    return AddTaskWidget();
+                    return AddTaskWidget(
+                      create: () async {
+                        await getTasks();
+                        await getCounts();
+                      },
+                    );
                   },
                 );
               },
               child: Container(
                 width: 60,
                 height: 60,
-                margin: EdgeInsets.only(bottom: 30),
+                margin: EdgeInsets.only(bottom: 30, right: 10),
                 decoration: BoxDecoration(
                   color: Colors.black,
                   shape: BoxShape.circle,
