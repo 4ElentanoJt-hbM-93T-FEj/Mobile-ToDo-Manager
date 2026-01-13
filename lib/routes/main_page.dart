@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:todo_locale_app/db/database.dart';
-import 'package:todo_locale_app/provider/task/task_model.dart';
 import 'package:todo_locale_app/widgets/addTask/add_task_modal_sheet.dart';
 import 'package:todo_locale_app/widgets/dasboard/statistick_card.dart';
 import 'package:todo_locale_app/widgets/item_task_card/task_item_card.dart';
@@ -14,6 +13,11 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   List<Map<String, dynamic>> listTasks = [];
+  List<Map<String, String>> typeTasks = [
+    {"opened": "Открыто"},
+    {"process": "В процессе"},
+    {"closed": "Закрыто"},
+  ];
   int countOpenTask = 0;
 
   @override
@@ -110,8 +114,11 @@ class _MainPageState extends State<MainPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      for (int i = 0; i < 3; i++) ...[
-                        StatistickCard(type: 'Тип', count: 0),
+                      for (int i = 0; i < typeTasks.length; i++) ...[
+                        StatistickCard(
+                          type: typeTasks[i].values.toList().first,
+                          count: 0,
+                        ),
                       ],
                     ],
                   ),
@@ -133,6 +140,10 @@ class _MainPageState extends State<MainPage> {
               onTap: () {
                 showModalBottomSheet(
                   useSafeArea: true,
+                  backgroundColor: Colors.white,
+                  constraints: BoxConstraints(
+                    minHeight: MediaQuery.of(context).size.height,
+                  ),
                   shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.vertical(
                       top: Radius.circular(20),

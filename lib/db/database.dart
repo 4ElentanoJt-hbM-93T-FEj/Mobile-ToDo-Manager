@@ -22,13 +22,23 @@ class DatabaseHelper {
 
   Future _onCreate(Database db, int version) async {
     await db.execute('''
+    CREATE TABLE IF NOT EXISTS "Status" (
+    	"id"	INTEGER NOT NULL,
+    	"name"	TEXT NOT NULL,
+    	PRIMARY KEY("id" AUTOINCREMENT)
+    );
+    ''');
+
+    await db.execute('''
     CREATE TABLE IF NOT EXISTS "Tasks" (
-    	"id" INTEGER,
+    	"id"	INTEGER NOT NULL,
     	"title"	TEXT,
-    	"description" TEXT,
-      "status" TEXT,
-      PRIMARY KEY("id" AUTOINCREMENT)
-      );
+    	"description"	TEXT,
+    	"status"	TEXT,
+    	"status_id"	INTEGER,
+    	PRIMARY KEY("id" AUTOINCREMENT),
+    FOREIGN KEY("status_id") REFERENCES "Status"("id")
+    );
     ''');
   }
 
@@ -49,7 +59,22 @@ class DatabaseHelper {
 
   Future<List<Map<String, Object?>>> getCountOpenTasks() async {
     Database db = await instance.db;
-    return await db.query("Tasks", columns: ["count(*)"], where: "status = 'opened'");
+    return await db.query(
+      "Tasks",
+      columns: ["count(*) as count"],
+      where: "status = 'opened'",
+    );
+  }
+
+  Future<List<Map<String, Object?>>> getFilteredTasks({
+    required String status,
+  }) async {
+    Database db = await instance.db;
+    return await db.query(
+      "Tasks",
+      columns: ["count(*) as count"],
+      where: "status = '$status'",
+    );
   }
 
   Future<List<Map<String, dynamic>>> queryAllTasks() async {

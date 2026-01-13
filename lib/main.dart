@@ -15,7 +15,6 @@ void main() async {
           '/': (context) => SplashScreen(),
           '/home': (context) => MainPage(),
         },
-        // home: SplashScreen(),
       ),
     ),
   );

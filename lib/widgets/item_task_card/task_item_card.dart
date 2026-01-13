@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class TaskItemCard extends StatelessWidget {
+class TaskItemCard extends StatefulWidget {
   final int id;
   final String title;
   final String? description;
@@ -12,6 +12,11 @@ class TaskItemCard extends StatelessWidget {
     this.description,
   });
 
+  @override
+  State<TaskItemCard> createState() => _TaskItemCardState();
+}
+
+class _TaskItemCardState extends State<TaskItemCard> {
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -28,7 +33,9 @@ class TaskItemCard extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  Expanded(child: Text(title, overflow: TextOverflow.ellipsis)),
+                  Expanded(
+                    child: Text(widget.title, overflow: TextOverflow.ellipsis),
+                  ),
                   SizedBox(width: 5),
                   Icon(Icons.keyboard_option_key_sharp),
                 ],
